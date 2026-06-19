@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Collective — ALUNA</title>
+<style>
+/* ── TWO-COLUMN LAYOUT ────────────────────── */
+.collective-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.collective-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── TEAM ACCORDION ───────────────────────── */
+.team-accordion {
+  width: 100%;
+  aspect-ratio: 1 / 0.7;
+  display: flex;
+  border: 1px solid var(--bdr-lt);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tm-item {
+  flex: 0 0 auto;
+  width: 48px;
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--bdr-lt);
+  transition: width 0.6s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
+  cursor: pointer;
+  background: var(--bg-l3);
+  transform: translateZ(0);
+  will-change: width;
+}
+
+.tm-item:last-child { border-right: none; }
+
+.tm-item.open {
+  cursor: default;
+}
+
+/* Tab — absolute so panel always fills full item width */
+.tm-tab {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 48px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tm-item.open .tm-tab { cursor: default; }
+
+.tm-vname {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg) translateZ(0);
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--td50);
+  white-space: nowrap;
+  transition: opacity 0.25s ease, color 0.2s ease;
+  backface-visibility: hidden;
+  will-change: opacity;
+}
+
+.tm-item:not(.open):hover .tm-vname { color: var(--td); }
+.tm-item.open .tm-vname { opacity: 0; }
+
+/* Panel — full width of item (tab floats on top) */
+.tm-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.tm-item.open .tm-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.22s;
+}
+
+.tm-photo {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.tm-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  filter: sepia(8%) brightness(.96);
+  display: block;
+}
+
+.tm-body {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.tm-body .tm-name {
+  font-family: var(--ff-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--td);
+}
+
+.tm-body .tm-role {
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--td50);
+}
+
+.tm-body .tm-bio {
+  font-family: var(--ff-body);
+  font-weight: 300;
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--td70);
+  margin-top: 4px;
+}
+
+.tm-initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-display);
+  font-size: 24px;
+  color: var(--stone);
+  background: var(--bg-l3);
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ 09 COLLECTIVE (Light) ═══ -->
+<section class="collective" id="collective" aria-labelledby="coll-h">
+  <div class="container">
+
+    <!-- Yuluka module -->
+    <div class="yuluka-mod af" aria-label="Yuluka: The Duality — previous Burning Man Honoraria installation by the same team">
+      <div class="yuluka-img" aria-hidden="true">
+        <img src="assets/yuluka01.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <div class="yuluka-ov" aria-hidden="true"></div>
+      <div class="yuluka-cap">
+        <p class="yuluka-t">Yuluka: The Duality</p>
+        <p class="yuluka-s">Burning Man Honoraria 2023 · Same team · Same commitment</p>
+      </div>
+    </div>
+
+    <!-- Two-column: text left, accordion right -->
+    <div class="collective-layout">
+
+      <div class="collective-left">
+        <h2 class="thl ar" id="coll-h">The Collective<br>Behind ALUNA</h2>
+        <div class="team-intro">
+          <p class="tbl al">ALUNA is a project by Outline Creative Lab, led by artists Santiago Caro and Tixana Ospina alongside a multidisciplinary team of designers, engineers, producers, and makers from Colombia and the United States.</p>
+        </div>
+      </div>
+
+      <!-- Horizontal accordion -->
+      <div class="team-accordion" role="list">
+
+        <div class="tm-item open" role="listitem">
+          <button class="tm-tab" aria-expanded="true" aria-controls="panel-0">
+            <span class="tm-vname">Santiago Caro</span>
+          </button>
+          <div class="tm-panel" id="panel-0">
+            <div class="tm-photo">
+              <img src="assets/images/team/santiago-caro.webp" alt="Santiago Caro" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=tm-initials>SC</div>'">
+            </div>
+            <div class="tm-body">
+              <p class="tm-name">Santiago Caro</p>
+              <p class="tm-role">Lead Artist · Creative Direction</p>
+              <p class="tm-bio">Founder of Outline Creative Lab. Industrial designer and audiovisual artist working across interactive art, broadcast, and bio-architecture in Colombia and the US.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tm-item" role="listitem">
+          <button class="tm-tab" aria-expanded="false" aria-controls="panel-1">
+            <span class="tm-vname">Tixana Ospina</span>
+          </button>
+          <div class="tm-panel" id="panel-1">
+            <div class="tm-photo">
+              <img src="assets/images/team/tixana-ospina.webp" alt="Tixana Ospina" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=tm-initials>TO</div>'">
+            </div>
+            <div class="tm-body">
+              <p class="tm-name">Tixana Ospina</p>
+              <p class="tm-role">Lead Artist · Brand &amp; Communications</p>
+              <p class="tm-bio">Strategic communications and PR. International experience spanning cultural institutions, governments, embassies, and NGOs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tm-item" role="listitem">
+          <button class="tm-tab" aria-expanded="false" aria-controls="panel-2">
+            <span class="tm-vname">Sami Mattar</span>
+          </button>
+          <div class="tm-panel" id="panel-2">
+            <div class="tm-photo">
+              <img src="assets/images/team/sami-matar.webp" alt="Sami Mattar" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=tm-initials>SM</div>'">
+            </div>
+            <div class="tm-body">
+              <p class="tm-name">Sami Mattar</p>
+              <p class="tm-role">Project Lead · Strategy &amp; Financing</p>
+              <p class="tm-bio">Producer and strategist committed to immersive experiences that expand the boundaries of what art can do in the world.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tm-item" role="listitem">
+          <button class="tm-tab" aria-expanded="false" aria-controls="panel-3">
+            <span class="tm-vname">Camilo Quimbayo</span>
+          </button>
+          <div class="tm-panel" id="panel-3">
+            <div class="tm-photo">
+              <img src="assets/images/team/camilo-quimbayo.webp" alt="Camilo Quimbayo" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=tm-initials>CQ</div>'">
+            </div>
+            <div class="tm-body">
+              <p class="tm-name">Camilo Quimbayo</p>
+              <p class="tm-role">Audiovisual Direction · Production Design</p>
+              <p class="tm-bio">Film director and visual artist. 15+ years across Mexico and Colombia. Burning Man collaborator since 2019.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tm-item" role="listitem">
+          <button class="tm-tab" aria-expanded="false" aria-controls="panel-4">
+            <span class="tm-vname">Camilo Ochoa</span>
+          </button>
+          <div class="tm-panel" id="panel-4">
+            <div class="tm-photo">
+              <img src="assets/images/team/camilo-ochoa.webp" alt="Camilo Ochoa" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=tm-initials>CO</div>'">
+            </div>
+            <div class="tm-body">
+              <p class="tm-name">Camilo Ochoa</p>
+              <p class="tm-role">3D Design &amp; Visualization</p>
+              <p class="tm-bio">Industrial designer and 3D artist with 18 years of experience across art, product design, architecture, and digital fabrication.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tm-item" role="listitem">
+          <button class="tm-tab" aria-expanded="false" aria-controls="panel-5">
+            <span class="tm-vname">Camilo Caycedo</span>
+          </button>
+          <div class="tm-panel" id="panel-5">
+            <div class="tm-photo">
+              <img src="assets/images/team/camilo-caycedo.webp" alt="Camilo Caycedo" loading="lazy"
+                onerror="this.parentElement.innerHTML='<div class=tm-initials>CC</div>'">
+            </div>
+            <div class="tm-body">
+              <p class="tm-name">Camilo Caycedo</p>
+              <p class="tm-role">Industrial Design · Technical Drawing</p>
+              <p class="tm-bio">Designer and fabricator. Cultural production work across Bogotá and Las Vegas.</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.team-accordion -->
+
+    </div><!-- /.collective-layout -->
+
+    <div class="coll-foot af">
+      <p class="tlb">Interested in collaborating?</p>
+      <a href="mailto:aluna@outlinecreativelab.com" class="btn-s" style="color:var(--td50);">Let's connect →</a>
+    </div>
+
+  </div>
+</section>
+
+<script src="script.js"></script>
+<script>
+  const accordion = document.querySelector('.team-accordion');
+  const tmItems  = document.querySelectorAll('.tm-item');
+  const TAB_W    = 48;
+
+  function setWidths(openItem, animate) {
+    const totalW = accordion.clientWidth;
+    const openW  = Math.round(totalW - (tmItems.length - 1) * TAB_W);
+    if (!animate) tmItems.forEach(it => it.style.transition = 'none, none');
+    tmItems.forEach(it => {
+      const isOpen = it === openItem;
+      it.style.width = (isOpen ? openW : TAB_W) + 'px';
+      it.classList.toggle('open', isOpen);
+      it.querySelector('.tm-tab').setAttribute('aria-expanded', String(isOpen));
+    });
+    if (!animate) {
+      // re-enable transition after the browser has painted the instant state
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        tmItems.forEach(it => it.style.transition = '');
+      }));
+    }
+  }
+
+  // Initialise without animation
+  setWidths(tmItems[0], false);
+
+  tmItems.forEach(item => {
+    item.addEventListener('click', () => {
+      if (item.classList.contains('open')) return;
+      setWidths(item, true);
+    });
+  });
+</script>
+</body>
+</html>

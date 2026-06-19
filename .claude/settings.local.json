@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Select-String -Path \"d:\\\\Camilo\\\\aluna_landing\\\\aluna_landing.html\" -Pattern \"page-push|nav-drawer|nav-overlay|</body>\")",
+      "Bash(Select-Object LineNumber, Line)"
+    ]
+  }
+}
