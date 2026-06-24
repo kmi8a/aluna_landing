@@ -16,19 +16,33 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.af,.al,.ar').forEach(el => obs.observe(el));
 
-/* GALLERY DRAG */
+/* GALLERY SCROLL + DRAG */
 const gWrap = document.getElementById('galleryWrap');
 const gProg = document.getElementById('gProg');
 if (gWrap) {
-  let isDown = false, startX, scrollLeft;
-  gWrap.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - gWrap.offsetLeft; scrollLeft = gWrap.scrollLeft; });
-  gWrap.addEventListener('mouseup', () => isDown = false);
-  gWrap.addEventListener('mousemove', (e) => {
-    if (!isDown) return; e.preventDefault(); const walk = (e.pageX - gWrap.offsetLeft - startX) * 1.5;
-    gWrap.scrollLeft = scrollLeft - walk;
+  function updateProg() {
+    if (!gProg) return;
     const p = (gWrap.scrollLeft / (gWrap.scrollWidth - gWrap.clientWidth)) * 100;
-    if (gProg) gProg.style.width = Math.max(10, p) + '%';
+    gProg.style.width = Math.max(10, p) + '%';
+  }
+
+  gWrap.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    gWrap.scrollLeft += e.deltaY + e.deltaX;
+    updateProg();
+  }, { passive: false });
+
+  let isDown = false, startX, scrollLeft;
+  gWrap.addEventListener('mousedown', (e) => { isDown = true; gWrap.classList.add('grab'); startX = e.pageX - gWrap.offsetLeft; scrollLeft = gWrap.scrollLeft; });
+  window.addEventListener('mouseup', () => { isDown = false; gWrap.classList.remove('grab'); });
+  gWrap.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    gWrap.scrollLeft = scrollLeft - (e.pageX - gWrap.offsetLeft - startX) * 1.5;
+    updateProg();
   });
+
+  gWrap.addEventListener('scroll', updateProg, { passive: true });
 }
 
 /* CURSOR */
