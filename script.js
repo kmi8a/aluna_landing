@@ -60,8 +60,25 @@ const accordion = document.querySelector('.team-accordion');
 if (accordion) {
   const tmItems = accordion.querySelectorAll('.tm-item');
   const TAB_W = 48;
+  const mq = window.matchMedia('(max-width:767px)');
+
+  function currentOpen() {
+    return accordion.querySelector('.tm-item.open') || tmItems[0];
+  }
 
   function setWidths(openItem, animate) {
+    if (mq.matches) {
+      // Mobile: CSS handles height animation, JS only manages open class
+      tmItems.forEach(it => {
+        const isOpen = it === openItem;
+        it.style.width = '';
+        it.style.transition = '';
+        it.classList.toggle('open', isOpen);
+        it.querySelector('.tm-tab').setAttribute('aria-expanded', String(isOpen));
+      });
+      return;
+    }
+
     const totalW = accordion.clientWidth;
     const openW  = Math.round(totalW - (tmItems.length - 1) * TAB_W);
 
@@ -84,7 +101,6 @@ if (accordion) {
       const wasOpen = it.classList.contains('open');
 
       if (wasOpen && !isOpen) {
-        // Closing: instantly hide content and snap width — no fade, no flash
         const panel = it.querySelector('.tm-panel');
         panel.style.transition = 'none';
         panel.style.opacity = '0';
@@ -98,7 +114,6 @@ if (accordion) {
           panel.style.opacity = '';
         }));
       } else if (isOpen && !wasOpen) {
-        // Opening: animate width expansion only
         it.style.width = openW + 'px';
         it.classList.add('open');
         it.querySelector('.tm-tab').setAttribute('aria-expanded', 'true');
@@ -113,6 +128,40 @@ if (accordion) {
       if (!item.classList.contains('open')) setWidths(item, true);
     });
   });
+
+  // Re-initialise when crossing the mobile breakpoint
+  mq.addEventListener('change', () => setWidths(currentOpen(), false));
+
+  // Recalculate widths on desktop resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    if (mq.matches) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => setWidths(currentOpen(), false), 150);
+  }, { passive: true });
+}
+
+/* LIGHTBOX */
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lbImg');
+const lbClose  = document.getElementById('lbClose');
+if (lightbox) {
+  function openLb(src, alt) {
+    lbImg.src = src; lbImg.alt = alt;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+  document.querySelectorAll('.g-item img').forEach(img => {
+    img.addEventListener('click', () => openLb(img.src, img.alt));
+  });
+  lbClose.addEventListener('click', closeLb);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox || e.target === lbImg.parentElement) closeLb(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb(); });
 }
 
 /* SHARE */
