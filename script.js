@@ -10,6 +10,11 @@ window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 80);
 }, { passive: true });
 
+const navToggle = document.getElementById('nav-toggle');
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => { if (navToggle) navToggle.checked = false; });
+});
+
 /* ANIMATIONS */
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
